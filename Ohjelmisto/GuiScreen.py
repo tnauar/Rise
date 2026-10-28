@@ -18,7 +18,7 @@ class GuiScreen(tkinter.Frame):
         """
         super().__init__(master)
         self.backend_logic = backend_logic
-        self.input_check = InputCheck(master)
+        self.input_check = InputCheck()
         self.font = font.Font(family="Arial", size=12)
         self.header_font = font.Font(family="Arial", size=16)
         self.top = None
@@ -29,6 +29,7 @@ class GuiScreen(tkinter.Frame):
         self.sentence_years = None
         self.sentence_months = None
         self.remand_duration_days = None
+        self.filename = "asiakkaat.csv"
 
     def start(self) -> None:
         """ Executes the functions that create the parts of the GUI and the GUI buttons.
@@ -160,7 +161,7 @@ class GuiScreen(tkinter.Frame):
         if e == None:
             e = self.backend_logic.calculate_date(self.sentence_years, self.sentence_months, self.remand_duration_days, self.sentence_start)
         if e == None:
-            e = self.backend_logic.write_file(self.firstname, self.lastname, self.sentence_years, self.sentence_months, self.remand_duration_days, self.sentence_start)
+            e = self.backend_logic.write_file(self.firstname, self.lastname, self.sentence_years, self.sentence_months, self.remand_duration_days, self.sentence_start, self.filename)
 
         if e == None:
             messagebox.showinfo("Talletus onnistui!", "Asiakastiedot tallennettu onnistuneesti.")

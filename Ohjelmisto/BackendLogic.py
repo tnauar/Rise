@@ -26,27 +26,32 @@ class BackendLogic():
         """
 
         e = None
+
+        try:
         
-        year, month, day = map(int, sentence_start.split("-"))
+            year, month, day = map(int, sentence_start.split("-"))
 
-        sentence_years = int(sentence_years)
-        sentence_months = int(sentence_months)
-        remand_days = int(remand_days)
+            sentence_years = int(sentence_years)
+            sentence_months = int(sentence_months)
+            remand_days = int(remand_days)
 
-        total_months = (year * 12 + (month-1)) + (sentence_years * 12 + sentence_months)
-        new_year = total_months // 12
-        new_month = total_months % 12 + 1
+            total_months = (year * 12 + (month-1)) + (sentence_years * 12 + sentence_months)
+            new_year = total_months // 12
+            new_month = total_months % 12 + 1
 
-        last_day = calendar.monthrange(new_year, new_month)[1]
-        new_day = min(day, last_day)
+            last_day = calendar.monthrange(new_year, new_month)[1]
+            new_day = min(day, last_day)
 
-        end_date_wo_remand = date(new_year, new_month, new_day).isoformat()
-        end_date = datetime.strptime(end_date_wo_remand, "%Y-%m-%d").date()
-        self.sentence_end_date = end_date - timedelta(days = remand_days)
+            end_date_wo_remand = date(new_year, new_month, new_day).isoformat()
+            end_date = datetime.strptime(end_date_wo_remand, "%Y-%m-%d").date()
+            self.sentence_end_date = end_date - timedelta(days = remand_days)
+            self.sentence_end_date = self.sentence_end_date.strftime("%Y-%m-%d")
+        except Exception as e:
+            return e
 
         return e
 
-    def write_file(self, firstname:str, lastname:str, sentence_years:int, sentence_months:int, remand_days:int, sentence_start:str) -> str:
+    def write_file(self, firstname:str, lastname:str, sentence_years:int, sentence_months:int, remand_days:int, sentence_start:str, filename:str) -> str:
         """ Writes the customer data to a csv file. 
 
         Args:
@@ -63,7 +68,7 @@ class BackendLogic():
 
         try:
 
-            with open("asiakkaat.csv", mode='a', newline='', encoding='utf-8') as file:
+            with open(filename, mode='a', newline='', encoding='utf-8') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow([
                     firstname, lastname, sentence_years, sentence_months, remand_days, sentence_start, self.sentence_end_date])

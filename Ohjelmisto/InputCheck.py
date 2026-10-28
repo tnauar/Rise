@@ -1,8 +1,6 @@
-import tkinter as tk
-from tkinter import messagebox
 import re
 
-class InputCheck(tk.Frame):
+class InputCheck():
     def __init__(self):
         pass
 
